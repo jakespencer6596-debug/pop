@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #f6f8fa;
+  --surface: #ffffff;
+  --ink: #0e1a2b;
+  --body: #3a4a5a;
+  --muted: #7a8896;
+  --line: #e3e8ee;
+  --brand: #ff5a2c;
+  --brand-hover: #e8461b;
+  --positive: #12a150;
+  --danger: #e5484d;
+  --info: #2563eb;
+  --night: #0b1522;
+  --night-surface: #12202f;
+  --night-muted: #8aa0b4;
+  --night-win: #2bd07a;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-positive: var(--positive);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-night: var(--night);
+  --color-night-surface: var(--night-surface);
+  --color-night-muted: var(--night-muted);
+  --color-night-win: var(--night-win);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --radius-card: 12px;
+  --radius-control: 8px;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--body);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Numeric columns and scoreboards */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shared focus ring for interactive controls */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--info);
+  outline-offset: 2px;
+}
+
+/* Data tables: sticky header, hairline dividers, right-aligned numbers */
+.pop-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.pop-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.pop-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--body);
+}
+.pop-table tr:last-child td {
+  border-bottom: none;
+}
+.pop-table th.num,
+.pop-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .pop-table {
+    font-size: 12px;
+  }
+  .pop-table th {
+    padding: 6px 8px;
+  }
+  .pop-table td {
+    padding: 8px;
+  }
+}
+
+.pop-table--dark th {
+  background: var(--night-surface);
+  color: var(--night-muted);
+  border-bottom-color: rgba(138, 160, 180, 0.25);
+}
+.pop-table--dark td {
+  color: #ffffff;
+  border-bottom-color: rgba(138, 160, 180, 0.18);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff;
+  }
+}

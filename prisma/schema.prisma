@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TournamentStatus {
+  SETUP
+  ROUND_ROBIN
+  MONEY_ROUND
+  COMPLETED
+}
+
+enum RoundPhase {
+  ROUND_ROBIN
+  MONEY_ROUND
+}
+
+enum RoundStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum GameStatus {
+  SCHEDULED
+  IN_PROGRESS
+  FINAL
+}
+
+enum MatchType {
+  SINGLES
+  DOUBLES
+}
+
+enum MoneyRoundFormat {
+  ROUND_ROBIN
+  BRACKET
+}
+
+enum TeamSide {
+  A
+  B
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
+
+enum PaymentMethod {
+  VENMO
+  CASH
+}
+
+model Tournament {
+  id                  String           @id @default(cuid())
+  name                String
+  venue               String?
+  date                DateTime?
+  status              TournamentStatus @default(SETUP)
+  numCourts           Int              @default(4)
+  gameTarget          Int              @default(11)
+  winByTwo            Boolean          @default(true)
+  roundRobinGames     Int              @default(6)
+  numAdvancing        Int              @default(6)
+  moneyRoundFormat    MoneyRoundFormat @default(ROUND_ROBIN)
+  moneyRoundMatchType MatchType        @default(SINGLES)
+  moneyRoundGames     Int              @default(5)
+  entryFeeCents       Int              @default(0)
+  prizePoolCents      Int              @default(0)
+  venmoHandle         String?
+  venmoNote           String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  players Player[]
+  rounds  Round[]
+}
+
+model Player {
+  id            String         @id @default(cuid())
+  tournamentId  String
+  name          String
+  contact       String?
+  checkedIn     Boolean        @default(false)
+  paymentStatus PaymentStatus  @default(UNPAID)
+  paymentMethod PaymentMethod?
+  seed          Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  tournament  Tournament   @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  gamePlayers GamePlayer[]
+
+  @@index([tournamentId])
+}
+
+model Round {
+  id           String      @id @default(cuid())
+  tournamentId String
+  number       Int
+  phase        RoundPhase
+  status       RoundStatus @default(SCHEDULED)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  games      Game[]
+
+  @@index([tournamentId])
+}
+
+model Game {
+  id           String     @id @default(cuid())
+  roundId      String
+  court        Int?
+  matchType    MatchType  @default(DOUBLES)
+  scoreA       Int?
+  scoreB       Int?
+  status       GameStatus @default(SCHEDULED)
+  bracketRound Int?
+  bracketSlot  Int?
+  nextGameId   String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  round       Round        @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  gamePlayers GamePlayer[]
+
+  @@index([roundId])
+}
+
+model GamePlayer {
+  id       String   @id @default(cuid())
+  gameId   String
+  playerId String
+  team     TeamSide
+
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, playerId])
+  @@index([playerId])
+}
