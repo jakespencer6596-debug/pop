@@ -4,6 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { usePublicTournament } from "@/lib/useTournament";
 import type { GameDTO, RoundDTO, TournamentPublicDTO } from "@/lib/types";
+import { SiteFooter } from "@/components/SiteFooter";
 import { StandingsTable } from "@/components/StandingsTable";
 
 type View = "standings" | "matchups" | "money";
@@ -24,74 +25,79 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
   const statusLine = statusText(data);
 
   return (
-    <main className="min-h-screen bg-night pb-10 text-white">
-      <header className="border-b border-white/10 px-4 py-4 sm:px-8 sm:py-5">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="font-display text-lg font-bold tracking-tight">
-              POP<span className="text-gold">.</span>
-              <span className="ml-2 font-sans text-xs font-medium text-night-muted uppercase tracking-wider">
-                Live
-              </span>
-            </p>
-            <h1 className="mt-1 font-display text-2xl font-bold sm:text-3xl">
-              {data.name}
-            </h1>
-            <p className="mt-1 text-sm text-night-muted">{statusLine}</p>
-          </div>
-          <nav
-            className="flex gap-1 rounded-[8px] border border-white/10 bg-night-surface p-1"
-            aria-label="Live views"
-          >
-            {(
-              [
-                ["standings", "Standings"],
-                ["matchups", "Matchups"],
-                ["money", "Money round"],
-              ] as Array<[View, string]>
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setView(key)}
-                aria-pressed={view === key}
-                className={cn(
-                  "focus-ring-dark rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors",
-                  view === key
-                    ? "bg-gold text-ink"
-                    : "text-night-muted hover:text-white",
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </header>
-
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-8">
-        {data.status === "COMPLETED" && data.champion && (
-          <div className="mt-6 rounded-[12px] border border-gold/60 bg-gold/10 px-6 py-6 text-center">
-            <p className="font-display text-xs font-semibold tracking-[0.2em] text-gold">
-              Champion
-            </p>
-            <p className="mt-2 font-display text-4xl font-bold sm:text-5xl">
-              {data.champion.name}
-            </p>
-            {data.placements.length > 1 && (
-              <p className="mt-2 text-sm text-night-muted">
-                Runner-up: {data.placements.find((p) => p.place === 2)?.name}
+    <div className="flex min-h-screen flex-col bg-night">
+      <main className="flex-1 pb-10 text-white">
+        <header className="border-b border-white/10 px-4 py-4 sm:px-8 sm:py-5">
+          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-display text-lg font-bold tracking-tight">
+                POP<span className="text-gold">.</span>
+                <span className="ml-2 font-sans text-xs font-medium text-night-muted uppercase tracking-wider">
+                  Live
+                </span>
               </p>
+              <h1 className="mt-1 font-display text-2xl font-bold sm:text-3xl">
+                {data.name}
+              </h1>
+              <p className="mt-1 text-sm text-night-muted">{statusLine}</p>
+            </div>
+            <nav
+              className="flex gap-1 rounded-[8px] border border-white/10 bg-night-surface p-1"
+              aria-label="Live views"
+            >
+              {(
+                [
+                  ["standings", "Standings"],
+                  ["matchups", "Matchups"],
+                  ["money", "Money round"],
+                ] as Array<[View, string]>
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setView(key)}
+                  aria-pressed={view === key}
+                  className={cn(
+                    "focus-ring-dark rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors",
+                    view === key
+                      ? "bg-gold text-ink"
+                      : "text-night-muted hover:text-white",
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </header>
+
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-8">
+          {data.status === "COMPLETED" && data.champion && (
+            <div className="mt-6 rounded-[12px] border border-gold/60 bg-gold/10 px-6 py-6 text-center">
+              <p className="font-display text-xs font-semibold tracking-[0.2em] text-gold">
+                Champion
+              </p>
+              <p className="mt-2 font-display text-4xl font-bold sm:text-5xl">
+                {data.champion.name}
+              </p>
+              {data.placements.length > 1 && (
+                <p className="mt-2 text-sm text-night-muted">
+                  Runner-up: {data.placements.find((p) => p.place === 2)?.name}
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="mt-6">
+            {view === "standings" && <StandingsView data={data} />}
+            {view === "matchups" && <MatchupsView data={data} />}
+            {view === "money" && (
+              <MoneyView data={data} started={moneyStarted} />
             )}
           </div>
-        )}
-
-        <div className="mt-6">
-          {view === "standings" && <StandingsView data={data} />}
-          {view === "matchups" && <MatchupsView data={data} />}
-          {view === "money" && <MoneyView data={data} started={moneyStarted} />}
         </div>
-      </div>
-    </main>
+      </main>
+      <SiteFooter dark />
+    </div>
   );
 }
 
