@@ -18,5 +18,5 @@ export function proxy(request: NextRequest) {
 export const config = {
   // Admin surface only. Public pages (/live, /pay, /login) and all API
   // routes handle their own auth.
-  matcher: ["/", "/new", "/t/:path*"],
+  matcher: ["/", "/new", "/t/:path*", "/player"],
 };

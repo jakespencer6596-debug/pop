@@ -112,7 +112,8 @@ After the deploy, the admin login is at `https://your-service.onrender.com/login
 ## Environment variables
 
 - `DATABASE_URL` - PostgreSQL connection string
-- `ADMIN_PASSWORD` - the single organizer password for `/login`
+- `ADMIN_PASSWORD` - the organizer password for `/login`; grants full admin access
+- `PLAYER_PASSWORD` - optional second password for the read-only player tier; players land on `/player` with links to the live scoreboard and pay page
 - `SESSION_SECRET` - at least 32 characters; signs the session cookie (12 hour sessions)
 
 ## Organizer guide

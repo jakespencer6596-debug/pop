@@ -1,8 +1,12 @@
 import { getIronSession, type SessionOptions } from "iron-session";
 import { cookies } from "next/headers";
 
+export type SessionRole = "admin" | "player";
+
 export interface SessionData {
-  isAdmin: boolean;
+  role?: SessionRole;
+  /** Kept for sessions issued before roles existed. */
+  isAdmin?: boolean;
 }
 
 export const SESSION_COOKIE = "pop_session";
@@ -29,7 +33,13 @@ export async function getSession() {
   return getIronSession<SessionData>(cookieStore, sessionOptions());
 }
 
-export async function isAdminSession(): Promise<boolean> {
+export async function getSessionRole(): Promise<SessionRole | null> {
   const session = await getSession();
-  return session.isAdmin === true;
+  if (session.role === "admin" || session.isAdmin === true) return "admin";
+  if (session.role === "player") return "player";
+  return null;
+}
+
+export async function isAdminSession(): Promise<boolean> {
+  return (await getSessionRole()) === "admin";
 }

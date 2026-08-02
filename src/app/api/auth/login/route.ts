@@ -11,19 +11,27 @@ export async function POST(request: Request) {
     return Response.json({ error: "Enter the password." }, { status: 400 });
   }
 
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) {
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
     return Response.json(
       { error: "Server is missing ADMIN_PASSWORD." },
       { status: 500 },
     );
   }
-  if (parsed.data.password !== expected) {
+  const playerPassword = process.env.PLAYER_PASSWORD;
+
+  let role: "admin" | "player";
+  if (parsed.data.password === adminPassword) {
+    role = "admin";
+  } else if (playerPassword && parsed.data.password === playerPassword) {
+    role = "player";
+  } else {
     return Response.json({ error: "Wrong password." }, { status: 401 });
   }
 
   const session = await getSession();
-  session.isAdmin = true;
+  session.role = role;
+  session.isAdmin = role === "admin";
   await session.save();
-  return Response.json({ ok: true });
+  return Response.json({ ok: true, role });
 }

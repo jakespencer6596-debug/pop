@@ -22,7 +22,10 @@ export function LoginForm() {
         body: JSON.stringify({ password }),
       });
       if (res.ok) {
-        router.push("/");
+        const data = (await res.json().catch(() => null)) as {
+          role?: string;
+        } | null;
+        router.push(data?.role === "player" ? "/player" : "/");
         router.refresh();
         return;
       }
@@ -40,7 +43,7 @@ export function LoginForm() {
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
       <Input
-        label="Admin password"
+        label="Password"
         type="password"
         name="password"
         autoComplete="current-password"

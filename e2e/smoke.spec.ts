@@ -24,7 +24,7 @@ const PLAYERS = [
 test("organizer can run an event end to end", async ({ page, browser }) => {
   // Log in with the shared admin password.
   await page.goto("/login");
-  await page.getByLabel("Admin password").fill(ADMIN_PASSWORD);
+  await page.getByLabel("Password").fill(ADMIN_PASSWORD);
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(
     page.getByRole("link", { name: "Create tournament" }),

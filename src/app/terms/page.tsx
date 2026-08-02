@@ -45,7 +45,7 @@ export default function TermsPage() {
             </h2>
             <p className="mt-1.5">
               POP does not process, hold, or transfer money. Payment pages
-              display the organizer's Venmo details and track payments that
+              display the organizer&apos;s Venmo details and track payments that
               players and organizers report themselves. Any payment dispute is
               between the player and the organizer. Venmo is a service of its
               own provider and has its own terms.
@@ -66,8 +66,9 @@ export default function TermsPage() {
               5. Acceptable use
             </h2>
             <p className="mt-1.5">
-              Do not misuse the service, attempt to access other organizers'
-              data, disrupt its operation, or use it for anything unlawful.
+              Do not misuse the service, attempt to access other
+              organizers&apos; data, disrupt its operation, or use it for
+              anything unlawful.
             </p>
           </section>
           <section>

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { isAdminSession } from "@/lib/session";
+import { getSessionRole } from "@/lib/session";
 import { SiteFooter } from "@/components/SiteFooter";
 import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = { title: "Log in" };
 
 export default async function LoginPage() {
-  if (await isAdminSession()) {
-    redirect("/");
-  }
+  const role = await getSessionRole();
+  if (role === "admin") redirect("/");
+  if (role === "player") redirect("/player");
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
       <main className="flex flex-1 flex-col lg:flex-row">
