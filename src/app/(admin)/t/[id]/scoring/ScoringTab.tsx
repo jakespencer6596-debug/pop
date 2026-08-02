@@ -68,7 +68,7 @@ export function ScoringTab({ tournamentId }: { tournamentId: string }) {
                 className={cn(
                   "focus-ring h-9 rounded-[8px] border px-3 text-sm font-medium transition-colors",
                   active
-                    ? "border-brand bg-brand text-white"
+                    ? "border-gold bg-gold text-ink"
                     : complete
                       ? "border-line bg-surface text-positive"
                       : "border-line bg-surface text-body hover:border-muted",

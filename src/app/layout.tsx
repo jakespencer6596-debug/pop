@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Oswald } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,8 +7,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const oswald = Oswald({
+  variable: "--font-oswald",
   subsets: ["latin"],
   weight: ["600", "700"],
 });
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${inter.variable} ${oswald.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -1,21 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --canvas: #f6f8fa;
+  /* Pickleball Kingdom palette */
+  --canvas: #f4f6f8;
   --surface: #ffffff;
-  --ink: #0e1a2b;
-  --body: #3a4a5a;
-  --muted: #7a8896;
-  --line: #e3e8ee;
-  --brand: #ff5a2c;
-  --brand-hover: #e8461b;
+  --ink: #101820;
+  --body: #2a2f36;
+  --muted: #5b6570;
+  --line: #e2e6ea;
+  --brand: #0056b8; /* Kingdom Blue: primary actions, links, focus */
+  --brand-hover: #00429a;
+  --blue-tint: #e7eef8;
+  --gold: #f9e01d; /* Kingdom Gold: emphasis on dark or as a fill */
+  --gold-deep: #e4cc00;
   --positive: #12a150;
-  --danger: #e5484d;
-  --info: #2563eb;
-  --night: #0b1522;
-  --night-surface: #12202f;
-  --night-muted: #8aa0b4;
-  --night-win: #2bd07a;
+  --danger: #d22e2e;
+  --warning: #b45309;
+  --info: #0056b8;
+  --night: #101820;
+  --night-surface: #16202b;
+  --night-muted: #93a1af;
+  --night-win: #29c46a;
 }
 
 @theme inline {
@@ -27,15 +32,19 @@
   --color-line: var(--line);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
+  --color-blue-tint: var(--blue-tint);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
   --color-positive: var(--positive);
   --color-danger: var(--danger);
+  --color-warning: var(--warning);
   --color-info: var(--info);
   --color-night: var(--night);
   --color-night-surface: var(--night-surface);
   --color-night-muted: var(--night-muted);
   --color-night-win: var(--night-win);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --font-display: var(--font-oswald), var(--font-inter), sans-serif;
   --radius-card: 12px;
   --radius-control: 8px;
 }
@@ -44,6 +53,12 @@ body {
   background: var(--canvas);
   color: var(--body);
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Athletic display type: condensed, uppercase, slightly tight tracking */
+.font-display {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* Numeric columns and scoreboards */
@@ -56,7 +71,12 @@ body {
   outline: none;
 }
 .focus-ring:focus-visible {
-  outline: 2px solid var(--info);
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+/* On the dark ink surfaces a blue ring vanishes; use gold */
+.focus-ring-dark:focus-visible {
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
@@ -73,7 +93,11 @@ body {
   z-index: 1;
   background: var(--surface);
   color: var(--muted);
-  font-weight: 500;
+  font-family: var(--font-oswald), var(--font-inter), sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   text-align: left;
   padding: 8px 12px;
   border-bottom: 1px solid var(--line);
@@ -108,11 +132,11 @@ body {
 .pop-table--dark th {
   background: var(--night-surface);
   color: var(--night-muted);
-  border-bottom-color: rgba(138, 160, 180, 0.25);
+  border-bottom-color: rgba(147, 161, 175, 0.25);
 }
 .pop-table--dark td {
   color: #ffffff;
-  border-bottom-color: rgba(138, 160, 180, 0.18);
+  border-bottom-color: rgba(147, 161, 175, 0.18);
 }
 
 @media print {

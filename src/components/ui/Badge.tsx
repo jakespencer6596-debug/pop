@@ -1,14 +1,16 @@
 import { cn } from "@/lib/cn";
 import type { ReactNode } from "react";
 
-type Tone = "neutral" | "positive" | "danger" | "info" | "brand";
+type Tone = "neutral" | "positive" | "danger" | "info" | "gold" | "warning";
 
 const toneClasses: Record<Tone, string> = {
   neutral: "bg-canvas text-body border-line",
   positive: "bg-positive/10 text-positive border-positive/25",
   danger: "bg-danger/10 text-danger border-danger/25",
-  info: "bg-info/10 text-info border-info/25",
-  brand: "bg-brand/10 text-brand border-brand/30",
+  info: "bg-blue-tint text-brand border-brand/25",
+  // Kingdom Gold reads as text only on the ink background
+  gold: "bg-ink text-gold border-ink",
+  warning: "bg-transparent text-warning border-warning/40",
 };
 
 export function Badge({
@@ -36,7 +38,7 @@ export function Badge({
 const statusTone: Record<string, { tone: Tone; label: string }> = {
   SETUP: { tone: "neutral", label: "Setup" },
   ROUND_ROBIN: { tone: "info", label: "Round 1" },
-  MONEY_ROUND: { tone: "brand", label: "Money round" },
+  MONEY_ROUND: { tone: "gold", label: "Money round" },
   COMPLETED: { tone: "positive", label: "Completed" },
 };
 

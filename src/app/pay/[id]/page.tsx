@@ -42,7 +42,7 @@ export default async function PayPage({
     ? await QRCode.toDataURL(payLink, {
         width: 480,
         margin: 2,
-        color: { dark: "#0E1A2B", light: "#FFFFFF" },
+        color: { dark: "#101820", light: "#FFFFFF" },
       })
     : null;
 
@@ -51,7 +51,7 @@ export default async function PayPage({
       <div className="mx-auto flex w-full max-w-md flex-col gap-5">
         <div>
           <p className="font-display text-lg font-bold tracking-tight text-ink">
-            POP<span className="text-brand">.</span>
+            POP<span className="text-gold">.</span>
           </p>
           <h1 className="mt-2 font-display text-2xl font-bold text-ink">
             {t.name}

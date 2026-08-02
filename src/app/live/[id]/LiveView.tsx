@@ -29,7 +29,7 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-end justify-between gap-3">
           <div>
             <p className="font-display text-lg font-bold tracking-tight">
-              POP<span className="text-brand">.</span>
+              POP<span className="text-gold">.</span>
               <span className="ml-2 font-sans text-xs font-medium text-night-muted uppercase tracking-wider">
                 Live
               </span>
@@ -55,9 +55,9 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
                 onClick={() => setView(key)}
                 aria-pressed={view === key}
                 className={cn(
-                  "focus-ring rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors",
+                  "focus-ring-dark rounded-[6px] px-3 py-1.5 text-sm font-medium transition-colors",
                   view === key
-                    ? "bg-brand text-white"
+                    ? "bg-gold text-ink"
                     : "text-night-muted hover:text-white",
                 )}
               >
@@ -70,8 +70,8 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
 
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-8">
         {data.status === "COMPLETED" && data.champion && (
-          <div className="mt-6 rounded-[12px] border border-brand/50 bg-brand/10 px-6 py-6 text-center">
-            <p className="text-xs font-semibold tracking-[0.2em] text-brand uppercase">
+          <div className="mt-6 rounded-[12px] border border-gold/60 bg-gold/10 px-6 py-6 text-center">
+            <p className="font-display text-xs font-semibold tracking-[0.2em] text-gold">
               Champion
             </p>
             <p className="mt-2 font-display text-4xl font-bold sm:text-5xl">
@@ -251,7 +251,7 @@ function GamePanel({ game }: { game: GameDTO }) {
         <span
           className={cn(
             final && "font-semibold text-night-win",
-            game.status === "IN_PROGRESS" && "text-brand",
+            game.status === "IN_PROGRESS" && "font-semibold text-gold",
           )}
         >
           {final ? "Final" : game.status === "IN_PROGRESS" ? "Live" : ""}
@@ -295,7 +295,7 @@ function TeamLine({
       </span>
       <span
         className={cn(
-          "tnum text-lg font-bold",
+          "tnum font-display text-xl font-bold",
           won ? "text-night-win" : "text-white",
         )}
       >

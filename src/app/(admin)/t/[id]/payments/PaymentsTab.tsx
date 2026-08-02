@@ -139,7 +139,7 @@ export function PaymentsTab({ tournamentId }: { tournamentId: string }) {
                                 : ""}
                           </Badge>
                         ) : (
-                          <Badge tone="danger">Unpaid</Badge>
+                          <Badge tone="warning">Unpaid</Badge>
                         )}
                       </td>
                       <td className="num">

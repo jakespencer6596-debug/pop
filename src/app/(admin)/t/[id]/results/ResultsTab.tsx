@@ -24,8 +24,8 @@ export function ResultsTab({ tournamentId }: { tournamentId: string }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="rounded-[12px] border border-brand/40 bg-brand/5 px-5 py-6 text-center">
-        <p className="text-xs font-semibold tracking-wide text-brand uppercase">
+      <div className="rounded-[12px] border border-gold bg-gold/10 px-5 py-6 text-center">
+        <p className="font-display text-xs font-semibold tracking-wide text-ink">
           Champion
         </p>
         <p className="mt-2 font-display text-3xl font-bold text-ink">

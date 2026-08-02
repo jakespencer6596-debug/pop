@@ -37,7 +37,7 @@ export function TournamentTabs({ tournamentId }: { tournamentId: string }) {
               className={cn(
                 "focus-ring -mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "border-brand text-ink"
+                  ? "border-gold text-ink"
                   : "border-transparent text-muted hover:text-body",
               )}
             >

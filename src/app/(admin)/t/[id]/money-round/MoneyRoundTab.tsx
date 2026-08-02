@@ -121,8 +121,8 @@ export function MoneyRoundTab({ tournamentId }: { tournamentId: string }) {
   return (
     <div className="flex flex-col gap-5">
       {data.champion && (
-        <div className="rounded-[12px] border border-brand/40 bg-brand/5 px-5 py-4">
-          <p className="text-xs font-semibold tracking-wide text-brand uppercase">
+        <div className="rounded-[12px] border border-gold bg-gold/10 px-5 py-4">
+          <p className="font-display text-xs font-semibold tracking-wide text-ink">
             Champion
           </p>
           <p className="mt-1 font-display text-2xl font-bold text-ink">

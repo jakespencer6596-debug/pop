@@ -326,7 +326,7 @@ function PlayerCard({
             {player.paymentStatus === "PAID" ? (
               <Badge tone="positive">Paid</Badge>
             ) : (
-              <Badge tone="danger">Unpaid</Badge>
+              <Badge tone="warning">Unpaid</Badge>
             )}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">

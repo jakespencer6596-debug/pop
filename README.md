@@ -13,6 +13,31 @@ The standard format is 16 players on 4 courts. Round 1 is six games of rotating-
 - iron-session for the admin session cookie
 - Vitest for unit tests, Playwright for the end-to-end smoke test
 
+## Design tokens
+
+POP wears the Pickleball Kingdom look: a dark navy-black base, gold for emphasis, royal blue for actions, and condensed uppercase headline type (Oswald for display, Inter for UI).
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Kingdom Ink | `#101820` | Top navigation, headings, public big-screen background |
+| Kingdom Gold | `#F9E01D` | Active indicators, leader emphasis, Advancing badge, wordmark dot |
+| Gold deep | `#E4CC00` | Hover on gold fills |
+| Kingdom Blue | `#0056B8` | Primary buttons, links, focus rings |
+| Blue hover | `#00429A` | Primary button hover |
+| Blue tint | `#E7EEF8` | Subtle info surfaces |
+| Canvas | `#F4F6F8` | App background |
+| Surface | `#FFFFFF` | Cards |
+| Border | `#E2E6EA` | Dividers and card borders |
+| Body text | `#2A2F36` | Default text |
+| Muted text | `#5B6570` | Secondary text |
+| Positive | `#12A150` | Wins, paid |
+| Danger | `#D22E2E` | Losses, alerts |
+| Night surface | `#16202B` | Cards on the big-screen view |
+| Night muted | `#93A1AF` | Secondary text on dark |
+| Win green (dark) | `#29C46A` | Wins on the big-screen view |
+
+Gold is never used as small text on light backgrounds; as text it appears only on the Kingdom Ink dark background.
+
 ## Prerequisites
 
 - Node.js 20.9 or newer

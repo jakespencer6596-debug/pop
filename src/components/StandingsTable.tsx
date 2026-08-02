@@ -3,8 +3,8 @@ import type { StandingRow } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 
 /**
- * Round 1 or money round standings. When `advancingCount` is set, a labeled
- * line marks the advancement cut.
+ * Round 1 or money round standings. When `advancingCount` is set, a gold
+ * line marks the advancement cut and advancing rows get a subtle gold tint.
  */
 export function StandingsTable({
   rows,
@@ -35,33 +35,41 @@ export function StandingsTable({
               advancingCount !== undefined && row.rank <= advancingCount;
             const cutRow =
               advancingCount !== undefined && row.rank === advancingCount;
+            const leader = row.rank === 1 && row.gamesPlayed > 0;
+            const cut = cutRow && "border-b-2 border-b-gold";
             return (
               <tr
                 key={row.playerId}
                 className={cn(
-                  advancing && !dark && "bg-info/5",
+                  advancing && !dark && "bg-gold/10",
                   advancing && dark && "bg-white/5",
                 )}
               >
-                <td
-                  className={cn(
-                    "num font-semibold",
-                    cutRow && "border-b-2 border-b-brand",
-                  )}
-                >
-                  {row.rank}
+                <td className={cn("num", cut)}>
+                  <span
+                    className={cn(
+                      "font-display text-sm font-semibold",
+                      dark && leader && "text-gold",
+                    )}
+                  >
+                    {row.rank}
+                  </span>
                 </td>
-                <td className={cn(cutRow && "border-b-2 border-b-brand")}>
+                <td className={cn(cut)}>
                   <span
                     className={cn(
                       "font-medium",
-                      dark ? "text-white" : "text-ink",
+                      dark && leader
+                        ? "text-gold"
+                        : dark
+                          ? "text-white"
+                          : "text-ink",
                     )}
                   >
                     {row.name}
                   </span>
                   {advancing && (
-                    <Badge tone="info" className="ml-2">
+                    <Badge tone="gold" className="ml-2">
                       Advancing
                     </Badge>
                   )}
@@ -70,7 +78,7 @@ export function StandingsTable({
                   className={cn(
                     "num font-semibold",
                     dark ? "text-night-win" : "text-positive",
-                    cutRow && "border-b-2 border-b-brand",
+                    cut,
                   )}
                 >
                   {row.wins}
@@ -79,31 +87,18 @@ export function StandingsTable({
                   className={cn(
                     "num",
                     dark ? "text-night-muted" : "text-danger",
-                    cutRow && "border-b-2 border-b-brand",
+                    cut,
                   )}
                 >
                   {row.losses}
                 </td>
-                <td
-                  className={cn(
-                    "num font-medium",
-                    cutRow && "border-b-2 border-b-brand",
-                  )}
-                >
+                <td className={cn("num font-medium", cut)}>
                   {row.pointDifferential > 0
                     ? `+${row.pointDifferential}`
                     : row.pointDifferential}
                 </td>
-                <td
-                  className={cn("num", cutRow && "border-b-2 border-b-brand")}
-                >
-                  {row.pointsFor}
-                </td>
-                <td
-                  className={cn("num", cutRow && "border-b-2 border-b-brand")}
-                >
-                  {row.pointsAgainst}
-                </td>
+                <td className={cn("num", cut)}>{row.pointsFor}</td>
+                <td className={cn("num", cut)}>{row.pointsAgainst}</td>
               </tr>
             );
           })}
