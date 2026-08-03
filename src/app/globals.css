@@ -139,21 +139,21 @@ body {
   border-bottom-color: rgba(147, 161, 175, 0.18);
 }
 
-/* Pickleball court scene (login brand panel).
-   One 7.5s sequence: drop in, four decaying bounces, then a rollout that
-   carries the ball off the edge of the panel. Gravity is approximated
-   with ease-in falls and ease-out rises; the ball only squashes at the
-   moment of floor contact. */
+/* Pickleball court scene (login page).
+   The ball flies in from off screen left like a hit ball: constant
+   horizontal velocity end to end (no sideways speed changes), gravity
+   timed bounces whose heights and hang times decay together, squash
+   only at contact, then a continuous roll off the right edge. */
 .pb-scene {
-  --ball: 84px;
-  --enter: -520px;
-  --h1: -240px;
-  --h2: -118px;
-  --h3: -54px;
-  --h4: -20px;
-  --xoff: 104vw;
-  --depth: 46px;
-  --cycle: 7.5s;
+  --ball: 76px;
+  --enter: -340px;
+  --h1: -168px;
+  --h2: -84px;
+  --h3: -40px;
+  --h4: -16px;
+  --xoff: 122vw;
+  --depth: 34px;
+  --cycle: 8s;
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -161,14 +161,14 @@ body {
 }
 @media (max-width: 1023px) {
   .pb-scene {
-    --ball: 46px;
-    --enter: -260px;
-    --h1: -118px;
-    --h2: -58px;
-    --h3: -26px;
-    --h4: -10px;
-    --xoff: 112vw;
-    --depth: 26px;
+    --ball: 44px;
+    --enter: -180px;
+    --h1: -90px;
+    --h2: -46px;
+    --h3: -22px;
+    --h4: -9px;
+    --xoff: 150vw;
+    --depth: 20px;
   }
 }
 .pb-glow {
@@ -188,11 +188,16 @@ body {
 }
 .pb-move {
   position: absolute;
-  left: 10%;
+  left: -10%;
   bottom: 12%;
-  transform-origin: 50% 100%;
   width: var(--ball);
+  transform-origin: 50% 100%;
   animation: pb-x var(--cycle) linear infinite;
+}
+@media (max-width: 1023px) {
+  .pb-move {
+    left: -18%;
+  }
 }
 .pb-y {
   animation: pb-y var(--cycle) infinite;
@@ -215,17 +220,17 @@ body {
     inset 4px 6px 9px rgba(255, 250, 200, 0.55);
   animation: pb-squash var(--cycle) linear infinite;
 }
-/* Pickleball holes: a dot grid clipped to the ball, rolling with it */
+/* Pickleball holes: a dot grid clipped to the ball, spinning with it */
 .pb-ball::after {
   content: "";
   position: absolute;
   inset: -30%;
   border-radius: 50%;
   background-image: radial-gradient(
-    rgba(64, 51, 0, 0.22) 3.2px,
-    transparent 4px
+    rgba(64, 51, 0, 0.22) 3px,
+    transparent 3.8px
   );
-  background-size: 19px 19px;
+  background-size: 18px 18px;
   -webkit-mask-image: radial-gradient(
     circle at 50% 50%,
     #000 52%,
@@ -245,151 +250,132 @@ body {
   animation: pb-shadow var(--cycle) linear infinite;
 }
 
-/* Horizontal: drifts forward through the bounces, then rolls off screen */
+/* One constant sideways velocity from entry to exit. The slight depth
+   drift and growth land inside the same linear ramp, so nothing jumps. */
 @keyframes pb-x {
   0% {
-    transform: translateX(0) translateY(calc(var(--depth) * -1)) scale(0.85);
+    transform: translateX(0) translateY(calc(var(--depth) * -1)) scale(0.92);
   }
-  7% {
-    transform: translateX(calc(var(--xoff) * 0.06))
-      translateY(calc(var(--depth) * -0.8)) scale(0.88);
+  42% {
+    transform: translateX(calc(var(--xoff) * 0.6)) translateY(0) scale(1);
   }
-  18.5% {
-    transform: translateX(calc(var(--xoff) * 0.15))
-      translateY(calc(var(--depth) * -0.5)) scale(0.92);
-  }
-  27% {
-    transform: translateX(calc(var(--xoff) * 0.23))
-      translateY(calc(var(--depth) * -0.27)) scale(0.95);
-  }
-  33% {
-    transform: translateX(calc(var(--xoff) * 0.28))
-      translateY(calc(var(--depth) * -0.12)) scale(0.98);
-  }
-  37% {
-    transform: translateX(calc(var(--xoff) * 0.32)) translateY(0) scale(1);
-    animation-timing-function: cubic-bezier(0.3, 0.5, 0.9, 0.95);
-  }
-  74%,
+  70%,
   100% {
-    transform: translateX(var(--xoff)) translateY(calc(var(--depth) * 0.08))
-      scale(1.01);
+    transform: translateX(var(--xoff)) translateY(0) scale(1);
   }
 }
-/* Vertical: accelerate down, decelerate up, heights decay each bounce */
+/* Gravity: accelerate down, decelerate up. Hang times follow the
+   square root of each bounce height, so the rhythm tightens naturally. */
 @keyframes pb-y {
   0% {
     transform: translateY(var(--enter));
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.85, 0.55);
   }
-  7% {
+  8.8% {
     transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+    animation-timing-function: cubic-bezier(0.15, 0.45, 0.55, 1);
   }
-  13% {
+  15.4% {
     transform: translateY(var(--h1));
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.85, 0.55);
   }
-  18.5% {
+  22.1% {
     transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+    animation-timing-function: cubic-bezier(0.15, 0.45, 0.55, 1);
   }
-  23% {
+  26.8% {
     transform: translateY(var(--h2));
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.85, 0.55);
   }
-  27% {
+  31.5% {
     transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+    animation-timing-function: cubic-bezier(0.15, 0.45, 0.55, 1);
   }
-  30.2% {
+  34.7% {
     transform: translateY(var(--h3));
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.85, 0.55);
   }
-  33% {
+  37.9% {
     transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+    animation-timing-function: cubic-bezier(0.15, 0.45, 0.55, 1);
   }
-  35.2% {
+  40% {
     transform: translateY(var(--h4));
-    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.85, 0.55);
   }
-  37%,
+  42%,
   100% {
     transform: translateY(0);
   }
 }
-/* Deformation only at the moment of contact, decaying with the bounces */
+/* Deformation only at the instant of contact, decaying every bounce */
 @keyframes pb-squash {
   0%,
-  6.4%,
-  7.7%,
-  17.9%,
-  19.2%,
-  26.4%,
-  27.6%,
-  32.5%,
-  33.5%,
+  8.2%,
+  9.4%,
+  21.6%,
+  22.7%,
+  31.1%,
+  32%,
+  37.6%,
+  38.3%,
   100% {
     transform: scale(1, 1);
   }
-  7% {
-    transform: scale(1.24, 0.78);
+  8.8% {
+    transform: scale(1.22, 0.8);
   }
-  18.5% {
-    transform: scale(1.16, 0.87);
+  22.1% {
+    transform: scale(1.14, 0.88);
   }
-  27% {
-    transform: scale(1.09, 0.93);
+  31.5% {
+    transform: scale(1.08, 0.94);
   }
-  33% {
-    transform: scale(1.04, 0.97);
+  37.9% {
+    transform: scale(1.03, 0.98);
   }
 }
-/* The hole pattern spins in flight and rolls the ball off screen */
+/* Topspin all the way through flight and roll, one constant rate */
 @keyframes pb-roll {
   0% {
     transform: rotate(0deg);
   }
-  37% {
-    transform: rotate(300deg);
-  }
-  74%,
+  70%,
   100% {
-    transform: rotate(900deg);
+    transform: rotate(1560deg);
   }
 }
-/* Shadow tightens on contact, softens at each peak, rides the rollout */
+/* Shadow tightens at every contact and rides under the rollout */
 @keyframes pb-shadow {
   0% {
-    transform: translateX(-50%) scale(0.25);
-    opacity: 0.06;
+    transform: translateX(-50%) scale(0.3);
+    opacity: 0.08;
   }
-  7% {
+  8.8% {
     transform: translateX(-50%) scale(1);
     opacity: 0.55;
   }
-  13% {
+  15.4% {
     transform: translateX(-50%) scale(0.5);
     opacity: 0.2;
   }
-  18.5% {
+  22.1% {
     transform: translateX(-50%) scale(0.95);
     opacity: 0.52;
   }
-  23% {
-    transform: translateX(-50%) scale(0.62);
-    opacity: 0.28;
+  26.8% {
+    transform: translateX(-50%) scale(0.65);
+    opacity: 0.3;
   }
-  27% {
-    transform: translateX(-50%) scale(0.9);
+  31.5% {
+    transform: translateX(-50%) scale(0.92);
     opacity: 0.5;
   }
-  30.2% {
-    transform: translateX(-50%) scale(0.72);
-    opacity: 0.36;
+  34.7% {
+    transform: translateX(-50%) scale(0.78);
+    opacity: 0.4;
   }
-  33%,
+  37.9%,
   100% {
     transform: translateX(-50%) scale(0.95);
     opacity: 0.55;
@@ -404,7 +390,7 @@ body {
     animation: none;
   }
   .pb-move {
-    transform: translateX(calc(var(--xoff) * 0.4));
+    transform: translateX(calc(var(--xoff) * 0.45));
   }
   .pb-shadow {
     transform: translateX(-50%) scale(0.95);
