@@ -15,16 +15,16 @@ export default async function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
       <main className="flex flex-1 flex-col lg:flex-row">
-        <section className="relative flex min-h-60 flex-col justify-start overflow-hidden bg-ink px-6 py-8 lg:min-h-0 lg:w-1/2 lg:justify-center lg:px-16 lg:py-0">
+        <section className="relative flex min-h-80 flex-col items-center justify-start overflow-hidden bg-ink px-6 pt-10 pb-6 lg:min-h-0 lg:w-1/2 lg:justify-center lg:px-16 lg:py-0">
           <CourtScene />
-          <div className="relative z-10 lg:-translate-y-16">
+          <div className="relative z-10 lg:-translate-y-40">
             <Image
               src="/brand/pop-logo.png"
               alt="POP, the Pickleball Operating Platform"
               width={1200}
               height={398}
               priority
-              className="w-56 lg:w-96"
+              className="w-60 lg:w-[400px]"
             />
           </div>
         </section>
