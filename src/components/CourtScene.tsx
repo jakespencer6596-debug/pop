@@ -17,11 +17,11 @@ export function CourtScene() {
       >
         {/* Court surface, split at the kitchen line */}
         <polygon
-          points="88,168 512,168 574,290 26,290"
+          points="88,168 512,168 553,232 47,232"
           fill="rgba(249,224,29,0.035)"
         />
         <polygon
-          points="26,290 574,290 700,460 -100,460"
+          points="47,232 553,232 700,460 -100,460"
           fill="rgba(0,86,184,0.07)"
         />
         {/* Sidelines running past the viewer */}
@@ -40,14 +40,14 @@ export function CourtScene() {
         {/* Kitchen line */}
         <path
           vectorEffect="non-scaling-stroke"
-          d="M26 290 L574 290"
+          d="M47 232 L553 232"
           stroke="rgba(249,224,29,0.28)"
           strokeWidth="2.5"
         />
         {/* Center line, kitchen to baseline */}
         <path
           vectorEffect="non-scaling-stroke"
-          d="M300 290 L300 460"
+          d="M300 232 L300 460"
           stroke="rgba(255,255,255,0.10)"
           strokeWidth="2"
         />
