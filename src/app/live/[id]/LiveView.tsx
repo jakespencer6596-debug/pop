@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/cn";
 import { usePublicTournament } from "@/lib/useTournament";
@@ -27,19 +28,35 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
   return (
     <div className="flex min-h-screen flex-col bg-night">
       <main className="flex-1 pb-10 text-white">
-        <header className="border-b border-white/10 px-4 py-4 sm:px-8 sm:py-5">
+        <header className="px-4 py-4 sm:px-8 sm:py-5">
           <div className="mx-auto flex w-full max-w-6xl flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="font-display text-lg font-bold tracking-tight">
-                POP<span className="text-gold">.</span>
-                <span className="ml-2 font-sans text-xs font-medium text-night-muted uppercase tracking-wider">
+              <p className="flex items-center gap-2.5">
+                <Image
+                  src="/brand/pop-mark.png"
+                  alt="POP"
+                  width={800}
+                  height={309}
+                  priority
+                  className="h-6 w-auto"
+                />
+                <span className="font-sans text-xs font-medium text-night-muted uppercase tracking-wider">
                   Live
                 </span>
               </p>
-              <h1 className="mt-1 font-display text-2xl font-bold sm:text-3xl">
+              <h1 className="mt-1.5 font-display text-3xl font-bold sm:text-4xl">
                 {data.name}
               </h1>
-              <p className="mt-1 text-sm text-night-muted">{statusLine}</p>
+              <p className="mt-1.5 flex items-center gap-2 text-sm text-night-muted">
+                {(data.status === "ROUND_ROBIN" ||
+                  data.status === "MONEY_ROUND") && (
+                  <span className="relative inline-flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
+                  </span>
+                )}
+                {statusLine}
+              </p>
             </div>
             <nav
               className="flex gap-1 rounded-[8px] border border-white/10 bg-night-surface p-1"
@@ -69,10 +86,11 @@ export function LiveView({ tournamentId }: { tournamentId: string }) {
             </nav>
           </div>
         </header>
+        <div className="h-0.5 bg-gradient-to-r from-gold via-gold/40 to-transparent" />
 
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-8">
           {data.status === "COMPLETED" && data.champion && (
-            <div className="mt-6 rounded-[12px] border border-gold/60 bg-gold/10 px-6 py-6 text-center">
+            <div className="mt-6 rounded-[12px] border border-gold/60 bg-[radial-gradient(circle_at_50%_0%,rgba(249,224,29,0.16),rgba(249,224,29,0.04)_70%)] px-6 py-7 text-center">
               <p className="font-display text-xs font-semibold tracking-[0.2em] text-gold">
                 Champion
               </p>

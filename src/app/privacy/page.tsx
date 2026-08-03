@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -8,9 +9,13 @@ export default function PrivacyPage() {
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-10">
-        <p className="font-display text-lg font-bold tracking-tight text-ink">
-          POP<span className="text-gold">.</span>
-        </p>
+        <Image
+          src="/brand/pop-tile.png"
+          alt="POP"
+          width={512}
+          height={512}
+          className="h-10 w-10 rounded-[8px]"
+        />
         <h1 className="mt-4 font-display text-2xl font-bold text-ink">
           Privacy Policy
         </h1>

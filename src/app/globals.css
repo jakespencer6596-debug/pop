@@ -139,12 +139,19 @@ body {
   border-bottom-color: rgba(147, 161, 175, 0.18);
 }
 
-/* Pickleball court scene (login brand panel) */
+/* Pickleball court scene (login brand panel).
+   One 8s sequence: drop in, four decaying bounces, roll out, rest, fade.
+   Gravity is approximated with ease-in falls and ease-out rises; the ball
+   only squashes at floor contact. */
 .pb-scene {
-  --pb-ball: 42px;
-  --pb-bounce: 200px;
-  --pb-travel: 340px;
-  --pb-beat: 1.05s;
+  --ball: 46px;
+  --enter: -440px;
+  --h1: -230px;
+  --h2: -120px;
+  --h3: -56px;
+  --h4: -22px;
+  --xf: 280px;
+  --cycle: 8s;
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -152,10 +159,23 @@ body {
 }
 @media (max-width: 1023px) {
   .pb-scene {
-    --pb-ball: 26px;
-    --pb-bounce: 62px;
-    --pb-travel: 30vw;
+    --ball: 28px;
+    --enter: -210px;
+    --h1: -104px;
+    --h2: -56px;
+    --h3: -26px;
+    --h4: -10px;
+    --xf: 34vw;
   }
+}
+.pb-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    560px circle at 28% 34%,
+    rgba(249, 224, 29, 0.06),
+    transparent 65%
+  );
 }
 .pb-court {
   position: absolute;
@@ -172,37 +192,31 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.18) 18%,
-    rgba(255, 255, 255, 0.18) 82%,
+    rgba(255, 255, 255, 0.16) 18%,
+    rgba(255, 255, 255, 0.16) 82%,
     transparent
   );
 }
-.pb-ball-x {
+.pb-move {
   position: absolute;
   left: 12%;
   bottom: 7.5%;
-  width: var(--pb-ball);
-  animation: pb-travel calc(var(--pb-beat) * 8) ease-in-out infinite alternate;
+  width: var(--ball);
+  animation:
+    pb-x var(--cycle) linear infinite,
+    pb-fade var(--cycle) linear infinite;
 }
 @media (max-width: 1023px) {
-  .pb-ball-x {
-    left: 54%;
+  .pb-move {
+    left: 48%;
   }
 }
-@keyframes pb-travel {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(var(--pb-travel));
-  }
-}
-.pb-ball-y {
-  animation: pb-bounce var(--pb-beat) infinite;
+.pb-y {
+  animation: pb-y var(--cycle) infinite;
 }
 .pb-ball {
-  width: var(--pb-ball);
-  height: var(--pb-ball);
+  width: var(--ball);
+  height: var(--ball);
   border-radius: 50%;
   position: relative;
   transform-origin: 50% 100%;
@@ -216,94 +230,225 @@ body {
   box-shadow:
     inset -4px -6px 10px rgba(84, 68, 0, 0.35),
     inset 3px 4px 6px rgba(255, 250, 200, 0.55);
-  animation: pb-squash var(--pb-beat) infinite;
+  animation: pb-squash var(--cycle) linear infinite;
 }
-/* Pickleball holes: a rotating dot grid clipped to the ball */
+/* Pickleball holes: a dot grid clipped to the ball, rolling with it */
 .pb-ball::after {
   content: "";
   position: absolute;
   inset: -30%;
   border-radius: 50%;
   background-image: radial-gradient(
-    rgba(64, 51, 0, 0.22) 2.1px,
-    transparent 2.7px
+    rgba(64, 51, 0, 0.22) 2.3px,
+    transparent 2.9px
   );
-  background-size: 12px 12px;
+  background-size: 13px 13px;
   -webkit-mask-image: radial-gradient(
     circle at 50% 50%,
     #000 52%,
     transparent 62%
   );
   mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 62%);
-  animation: pb-spin 5s linear infinite;
-}
-@keyframes pb-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/* Fall accelerates, rise decelerates; contact sits at the midpoint */
-@keyframes pb-bounce {
-  0% {
-    transform: translateY(calc(-1 * var(--pb-bounce)));
-    animation-timing-function: cubic-bezier(0.37, 0.01, 0.92, 0.62);
-  }
-  50% {
-    transform: translateY(calc(-0.06 * var(--pb-ball)));
-    animation-timing-function: cubic-bezier(0.08, 0.38, 0.63, 0.99);
-  }
-  100% {
-    transform: translateY(calc(-1 * var(--pb-bounce)));
-  }
-}
-@keyframes pb-squash {
-  0%,
-  46%,
-  54%,
-  100% {
-    transform: scale(1, 1);
-  }
-  49%,
-  51% {
-    transform: scale(1.16, 0.84);
-  }
+  animation: pb-roll var(--cycle) infinite;
 }
 .pb-shadow {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--pb-ball) * -0.12);
-  width: var(--pb-ball);
-  height: calc(var(--pb-ball) * 0.22);
+  bottom: calc(var(--ball) * -0.12);
+  width: var(--ball);
+  height: calc(var(--ball) * 0.22);
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), transparent);
-  animation: pb-shadow var(--pb-beat) infinite;
+  animation: pb-shadow var(--cycle) linear infinite;
 }
-@keyframes pb-shadow {
-  0%,
-  100% {
-    transform: translateX(-50%) scale(0.45);
-    opacity: 0.25;
-    animation-timing-function: cubic-bezier(0.37, 0.01, 0.92, 0.62);
+
+/* Horizontal drift: forward through the bounces, decelerating roll, stop */
+@keyframes pb-x {
+  0% {
+    transform: translateX(0);
   }
-  50% {
-    transform: translateX(-50%) scale(1.08);
-    opacity: 0.6;
-    animation-timing-function: cubic-bezier(0.08, 0.38, 0.63, 0.99);
+  7.3% {
+    transform: translateX(calc(var(--xf) * 0.15));
+  }
+  19.3% {
+    transform: translateX(calc(var(--xf) * 0.42));
+  }
+  28% {
+    transform: translateX(calc(var(--xf) * 0.62));
+  }
+  34% {
+    transform: translateX(calc(var(--xf) * 0.75));
+  }
+  38% {
+    transform: translateX(calc(var(--xf) * 0.83));
+    animation-timing-function: cubic-bezier(0.1, 0.6, 0.3, 1);
+  }
+  58%,
+  95.9% {
+    transform: translateX(var(--xf));
+  }
+  96%,
+  100% {
+    transform: translateX(0);
+  }
+}
+/* Vertical: accelerate down, decelerate up, heights decay each bounce */
+@keyframes pb-y {
+  0% {
+    transform: translateY(var(--enter));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  7.3% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+  }
+  13.3% {
+    transform: translateY(var(--h1));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  19.3% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+  }
+  23.6% {
+    transform: translateY(var(--h2));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  28% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+  }
+  31% {
+    transform: translateY(var(--h3));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  34% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1);
+  }
+  36% {
+    transform: translateY(var(--h4));
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  38%,
+  95.9% {
+    transform: translateY(0);
+  }
+  96%,
+  100% {
+    transform: translateY(var(--enter));
+  }
+}
+/* Deformation only at the moment of contact, decaying with the bounces */
+@keyframes pb-squash {
+  0%,
+  6.6%,
+  8.2%,
+  18.7%,
+  20.1%,
+  27.5%,
+  28.7%,
+  33.6%,
+  34.5%,
+  100% {
+    transform: scale(1, 1);
+  }
+  7.3% {
+    transform: scale(1.26, 0.76);
+  }
+  19.3% {
+    transform: scale(1.17, 0.86);
+  }
+  28% {
+    transform: scale(1.1, 0.92);
+  }
+  34% {
+    transform: scale(1.05, 0.96);
+  }
+}
+/* The hole pattern rolls forward and stops with the ball */
+@keyframes pb-roll {
+  0% {
+    transform: rotate(0deg);
+  }
+  38% {
+    transform: rotate(280deg);
+    animation-timing-function: cubic-bezier(0.1, 0.6, 0.3, 1);
+  }
+  58%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Shadow tightens on contact, softens at each peak, sits under the rest */
+@keyframes pb-shadow {
+  0% {
+    transform: translateX(-50%) scale(0.25);
+    opacity: 0.08;
+  }
+  7.3% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.55;
+  }
+  13.3% {
+    transform: translateX(-50%) scale(0.5);
+    opacity: 0.22;
+  }
+  19.3% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0.52;
+  }
+  23.6% {
+    transform: translateX(-50%) scale(0.6);
+    opacity: 0.28;
+  }
+  28% {
+    transform: translateX(-50%) scale(0.92);
+    opacity: 0.5;
+  }
+  31% {
+    transform: translateX(-50%) scale(0.7);
+    opacity: 0.36;
+  }
+  34%,
+  95.9% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0.55;
+  }
+  96%,
+  100% {
+    transform: translateX(-50%) scale(0.25);
+    opacity: 0.08;
+  }
+}
+/* Rest, then fade out before the sequence restarts */
+@keyframes pb-fade {
+  0% {
+    opacity: 0;
+  }
+  2%,
+  80% {
+    opacity: 1;
+  }
+  86%,
+  100% {
+    opacity: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pb-ball-x,
-  .pb-ball-y,
+  .pb-move,
+  .pb-y,
   .pb-ball,
   .pb-ball::after,
   .pb-shadow {
     animation: none;
   }
-  .pb-ball-y {
-    transform: translateY(calc(-0.06 * var(--pb-ball)));
+  .pb-move {
+    transform: translateX(calc(var(--xf) * 0.6));
+    opacity: 1;
   }
   .pb-shadow {
-    transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(0.95);
     opacity: 0.5;
   }
 }

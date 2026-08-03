@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import QRCode from "qrcode";
 import { prisma } from "@/lib/prisma";
@@ -49,18 +50,25 @@ export default async function PayPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <main className="flex-1 px-4 py-8">
+      <header className="bg-ink">
+        <div className="mx-auto w-full max-w-md px-4 pt-8 pb-6">
+          <Image
+            src="/brand/pop-mark.png"
+            alt="POP"
+            width={800}
+            height={309}
+            priority
+            className="h-8 w-auto"
+          />
+          <h1 className="mt-4 font-display text-2xl font-bold text-white">
+            {t.name}
+          </h1>
+          <p className="mt-1 text-sm text-white/60">Entry payment</p>
+        </div>
+        <div className="h-0.5 bg-gradient-to-r from-gold via-gold/40 to-transparent" />
+      </header>
+      <main className="flex-1 px-4 py-6">
         <div className="mx-auto flex w-full max-w-md flex-col gap-5">
-          <div>
-            <p className="font-display text-lg font-bold tracking-tight text-ink">
-              POP<span className="text-gold">.</span>
-            </p>
-            <h1 className="mt-2 font-display text-2xl font-bold text-ink">
-              {t.name}
-            </h1>
-            <p className="mt-1 text-sm text-muted">Entry payment</p>
-          </div>
-
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-[12px] border border-line bg-surface px-4 py-3">
               <p className="text-xs font-medium text-muted">Entry fee</p>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,11 +17,15 @@ export function AdminHeader() {
     <header className="no-print sticky top-0 z-30 bg-ink">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
         <div className="flex h-full items-center gap-6">
-          <Link
-            href="/"
-            className="focus-ring-dark font-display text-lg font-bold tracking-tight text-white"
-          >
-            POP<span className="text-gold">.</span>
+          <Link href="/" className="focus-ring-dark flex items-center">
+            <Image
+              src="/brand/pop-mark.png"
+              alt="POP"
+              width={800}
+              height={309}
+              priority
+              className="h-7 w-auto"
+            />
           </Link>
           <nav aria-label="Primary" className="flex h-full items-stretch">
             <Link
@@ -51,6 +56,7 @@ export function AdminHeader() {
           Log out
         </button>
       </div>
+      <div className="h-0.5 bg-gradient-to-r from-gold via-gold/40 to-transparent" />
     </header>
   );
 }

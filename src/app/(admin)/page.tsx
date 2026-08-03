@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { cn } from "@/lib/cn";
 import { formatDate, plural } from "@/lib/format";
 import { TournamentStatusBadge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export const metadata: Metadata = { title: "Tournaments" };
 export const dynamic = "force-dynamic";
+
+const statusStripe: Record<string, string> = {
+  SETUP: "bg-muted",
+  ROUND_ROBIN: "bg-brand",
+  MONEY_ROUND: "bg-gold",
+  COMPLETED: "bg-positive",
+};
 
 export default async function DashboardPage() {
   const tournaments = await prisma.tournament.findMany({
@@ -42,27 +49,36 @@ export default async function DashboardPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {tournaments.map((t) => (
-            <Card key={t.id} className="transition-colors hover:border-muted">
-              <Link
-                href={`/t/${t.id}`}
-                className="focus-ring flex flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-5"
-              >
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
+            <Link
+              key={t.id}
+              href={`/t/${t.id}`}
+              className="focus-ring group flex overflow-hidden rounded-[12px] border border-line bg-surface shadow-[0_1px_2px_rgba(16,24,32,0.04)] transition-all hover:-translate-y-0.5 hover:border-muted hover:shadow-[0_6px_16px_rgba(16,24,32,0.08)]"
+            >
+              <span
+                className={cn(
+                  "w-1 shrink-0 self-stretch",
+                  statusStripe[t.status] ?? "bg-muted",
+                )}
+              />
+              <span className="flex flex-1 flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-5">
+                <span className="min-w-0">
+                  <span className="flex flex-wrap items-center gap-2">
                     <span className="font-display text-[15px] font-semibold text-ink">
                       {t.name}
                     </span>
                     <TournamentStatusBadge status={t.status} />
-                  </div>
-                  <p className="mt-1 text-[13px] text-muted">
+                  </span>
+                  <span className="mt-1 block text-[13px] text-muted">
                     {formatDate(t.date)}
                     {t.venue ? ` at ${t.venue}` : ""} &middot;{" "}
                     {plural(t._count.players, "player")}
-                  </p>
-                </div>
-                <span className="text-sm font-medium text-info">Open</span>
-              </Link>
-            </Card>
+                  </span>
+                </span>
+                <span className="text-sm font-medium text-info group-hover:underline">
+                  Open
+                </span>
+              </span>
+            </Link>
           ))}
         </div>
       )}
