@@ -152,6 +152,7 @@ body {
   --h3: -54px;
   --h4: -20px;
   --xoff: 58vw;
+  --depth: 46px;
   --cycle: 7.5s;
   position: absolute;
   inset: 0;
@@ -167,6 +168,7 @@ body {
     --h3: -26px;
     --h4: -10px;
     --xoff: 112vw;
+    --depth: 26px;
   }
 }
 .pb-glow {
@@ -186,8 +188,9 @@ body {
 }
 .pb-move {
   position: absolute;
-  left: 7%;
-  bottom: 6%;
+  left: 10%;
+  bottom: 12%;
+  transform-origin: 50% 100%;
   width: var(--ball);
   animation: pb-x var(--cycle) linear infinite;
 }
@@ -245,27 +248,32 @@ body {
 /* Horizontal: drifts forward through the bounces, then rolls off screen */
 @keyframes pb-x {
   0% {
-    transform: translateX(0);
+    transform: translateX(0) translateY(calc(var(--depth) * -1)) scale(0.85);
   }
   7% {
-    transform: translateX(calc(var(--xoff) * 0.1));
+    transform: translateX(calc(var(--xoff) * 0.1))
+      translateY(calc(var(--depth) * -0.8)) scale(0.88);
   }
   18.5% {
-    transform: translateX(calc(var(--xoff) * 0.26));
+    transform: translateX(calc(var(--xoff) * 0.26))
+      translateY(calc(var(--depth) * -0.5)) scale(0.92);
   }
   27% {
-    transform: translateX(calc(var(--xoff) * 0.4));
+    transform: translateX(calc(var(--xoff) * 0.4))
+      translateY(calc(var(--depth) * -0.27)) scale(0.95);
   }
   33% {
-    transform: translateX(calc(var(--xoff) * 0.5));
+    transform: translateX(calc(var(--xoff) * 0.5))
+      translateY(calc(var(--depth) * -0.12)) scale(0.98);
   }
   37% {
-    transform: translateX(calc(var(--xoff) * 0.56));
+    transform: translateX(calc(var(--xoff) * 0.56)) translateY(0) scale(1);
     animation-timing-function: cubic-bezier(0.3, 0.45, 0.75, 1);
   }
   74%,
   100% {
-    transform: translateX(var(--xoff));
+    transform: translateX(var(--xoff)) translateY(calc(var(--depth) * 0.08))
+      scale(1.01);
   }
 }
 /* Vertical: accelerate down, decelerate up, heights decay each bounce */
